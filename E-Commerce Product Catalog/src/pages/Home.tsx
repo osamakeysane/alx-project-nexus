@@ -8,6 +8,7 @@ import { setProducts } from "../redux/productSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import type { RootState } from "../redux/store";
+import ProductCard from "../components/ProductCard";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -53,7 +54,7 @@ const Home = () => {
         <h2>top products </h2>
         <div>
           {products.products.slice(0, 5).map((product) => (
-            <div key={product.id}>{product.name}</div>
+            <ProductCard product={product} />
           ))}
         </div>
       </div>
