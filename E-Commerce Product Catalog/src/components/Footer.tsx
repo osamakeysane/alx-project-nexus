@@ -60,15 +60,28 @@ const Footer = () => {
             <input
               type="email"
               placeholder="Your email"
-              className="p-1 rounded text-black"
+              className=" w-full p-2  rounded-l-lg bg-gray-800 border border-gray-600"
             />
             <button
               type="submit"
-              className="bg-red-600 text-white px-4 rounded-r-lg border-gray-600"
+              className="bg-red-600 text-white px-4 py-2 rounded-r-lg"
             >
               Subscribe
             </button>
           </form>
+        </div>
+      </div>
+      <div className="mt-8 border-t border-gray-700 pt-4">
+        <div className="container mx-auto flex fkex-col md:flex-row justify-between items-center">
+          <p>&copy; 2025 E-shop All Reserved</p>
+          <div className="flex space-x-4 mt-4 md:mt-0">
+            <a href="" className="hover:underline">
+              privacy policy
+            </a>
+            <a href="" className="hover:underline">
+              terms and condition
+            </a>
+          </div>
         </div>
       </div>
     </footer>
