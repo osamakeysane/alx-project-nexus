@@ -8,4 +8,9 @@ const store = configureStore({
     product: productSlice,
   },
 });
+
+// ✅ These two types should be added
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+
 export default store;
