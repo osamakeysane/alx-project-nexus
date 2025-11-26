@@ -2,8 +2,16 @@ import { Categories } from "../assets/mockData";
 import heroImage from "../assets/images/bg-hero.webp";
 import InfoSection from "../components/infoSection";
 import CategorySection from "../components/CategorySection";
+import { setProducts } from "../redux/cartSlice";
+import { useDispatch, UseDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const Home = () => {
+  const dispatch = useDispatch();
+  const products = useSelector((state) => state.product);
+  useEffect(() => {
+    dispatch(setProducts(mockData));
+  }, []);
   return (
     <div className="bg-white mt-2 px-4 md:px-16 lg:px-24">
       <div className="container mx-auto py-4 flex flex-col md:flex-row space-x-2">
@@ -37,6 +45,15 @@ const Home = () => {
       </div>
       <InfoSection />
       <CategorySection />
+
+      <div>
+        <h2>top products </h2>
+        <div>
+          {products.products.slice(0, 5).map((product) => (
+            <div>{product.title}</div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
