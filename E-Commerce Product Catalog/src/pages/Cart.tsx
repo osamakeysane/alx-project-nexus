@@ -3,10 +3,13 @@ import type { RootState } from "../redux/store";
 import EmptyCart from "../assets/images/emptycart.jpg";
 import { FaTrashAlt } from "react-icons/fa";
 import { useState } from "react";
+import Modal from "../components/Modal"; // Make sure path is correct
+import ChangeAddress from "../components/ChangeAddress";
 
 const Cart = () => {
   const cart = useSelector((state: RootState) => state.cart);
   const [address, setAddress] = useState("main st, 0012");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div className="container mx-auto py-8 min-h-96 px-4 md:px-16 lg:px-24">
@@ -20,7 +23,7 @@ const Cart = () => {
                 <div className="flex space-x-8">
                   <p>price</p>
                   <p>quantity</p>
-                  <p>aubtotal</p>
+                  <p>Subtotal</p>
                   <p>remove</p>
                 </div>
               </div>
@@ -65,7 +68,10 @@ const Cart = () => {
                   Shipping to:{" "}
                   <span className="text-xs font-bold">{address}</span>
                 </p>
-                <button className="text-blue-500 hover:underline mt-1 ml-2">
+                <button
+                  className="text-blue-500 hover:underline mt-1 ml-2"
+                  onClick={() => setIsModalOpen(true)}
+                >
                   change address
                 </button>
               </div>
@@ -78,6 +84,14 @@ const Cart = () => {
               </button>
             </div>
           </div>
+          <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}>
+            {/* You can pass your modal content here */}
+            <h3 className="text-lg font-semibold">Change Address</h3>
+            <ChangeAddress
+              setAddress={setAddress}
+              setIsModalOpen={setIsModalOpen}
+            />
+          </Modal>
         </div>
       ) : (
         <div className="flex justify-center">
