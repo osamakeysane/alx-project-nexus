@@ -1,15 +1,17 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../redux/store";
 import EmptyCart from "../assets/images/emptycart.jpg";
 import { FaTrashAlt } from "react-icons/fa";
 import { useState } from "react";
 import Modal from "../components/Modal"; // Make sure path is correct
 import ChangeAddress from "../components/ChangeAddress";
+import { removeFromCart } from "../redux/cartSlice";
 
 const Cart = () => {
   const cart = useSelector((state: RootState) => state.cart);
   const [address, setAddress] = useState("main st, 0012");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const dispatch = useDispatch();
 
   return (
     <div className="container mx-auto py-8 min-h-96 px-4 md:px-16 lg:px-24">
@@ -49,7 +51,10 @@ const Cart = () => {
                       <button className="text-xl px-1 border-l">+</button>
                     </div>
                     <p>${(product.price * product.quantity).toFixed(2)}</p>
-                    <button className="tetx-red-500 hover:text-red-700">
+                    <button
+                      className="tetx-red-500 hover:text-red-700"
+                      onClick={() => dispatch(removeFromCart(product.id))}
+                    >
                       <FaTrashAlt />
                     </button>
                   </div>
