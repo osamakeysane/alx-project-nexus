@@ -1,11 +1,36 @@
 import { useState } from "react";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import type { RootState } from "../redux/store";
+import { useNavigate } from "react-router-dom";
 
-function Checkout() {
+type CheckoutProps = {
+  setOrder: (order: any) => void; // or replace 'any' with a real type later
+};
+function Checkout({ setOrder }: CheckoutProps) {
   const [billingToggle, setBillingToggle] = useState(true);
   const [shippingToggle, setshippingToggle] = useState(true);
   const [paymentToggle, setpaymentToggle] = useState(false);
   const [paymentMethod, setpaymentMethod] = useState("cod");
+  const [shippingInfo, setShippingInfo] = useState({
+    address: "",
+    city: "",
+    zip: "",
+  });
+
+  const cart = useSelector((state: RootState) => state.cart);
+  const navigate = useNavigate();
+  const placeOrder = () => {
+    const newOrder = {
+      products: cart.products,
+      orderNumber: "12345",
+      shippingInformation: shippingInfo,
+      totalPrice: cart.totalPrice,
+    };
+
+    setOrder(newOrder); // ✅ save the order
+    navigate("/order-confirmation"); // ✅ go to confirmation page
+  };
 
   return (
     <div className="container mx-auto py-8 min-h-96 px-4 md:px-16 lg:px-24">
@@ -66,31 +91,55 @@ function Checkout() {
             </div>
 
             {/* COLLAPSIBLE BODY */}
-            <div className={`space-y-4 mt-4 ${shippingToggle ? "" : "hidden"}`}>
+            <div className={`space-y-4  ${shippingToggle ? "" : "hidden"}`}>
               <div className="flex flex-col">
-                <label>Address</label>
+                <label className="block text-gray-700">Address</label>
                 <input
                   type="text"
-                  className="border p-2 rounded"
-                  placeholder="Enter your name"
+                  name="address"
+                  className="w-full px-3 py-2 border"
+                  placeholder="Enter your address"
+                  value={shippingInfo.address}
+                  onChange={(e) =>
+                    setShippingInfo({
+                      ...shippingInfo,
+                      address: e.target.value,
+                    })
+                  }
                 />
               </div>
 
               <div className="flex flex-col">
-                <label>City</label>
+                <label className="block text-gray-700">City</label>
                 <input
-                  type="email"
+                  type="text"
+                  name="city"
                   className="border p-2 rounded"
-                  placeholder="Enter your email"
+                  placeholder="Enter your city"
+                  value={shippingInfo.city}
+                  onChange={(e) =>
+                    setShippingInfo({
+                      ...shippingInfo,
+                      city: e.target.value,
+                    })
+                  }
                 />
               </div>
 
               <div className="flex flex-col">
-                <label>Zip Code</label>
+                <label className="block text-gray-700">Zip Code</label>
                 <input
                   type="text"
+                  name="zip"
                   className="border p-2 rounded"
-                  placeholder="Enter your phone number"
+                  placeholder="Enter zip code"
+                  value={shippingInfo.zip}
+                  onChange={(e) =>
+                    setShippingInfo({
+                      ...shippingInfo,
+                      zip: e.target.value,
+                    })
+                  }
                 />
               </div>
             </div>
@@ -188,7 +237,42 @@ function Checkout() {
         {/* RIGHT SIDE */}
         <div className="md:w-1/3 bg-white p-6 rounded-lg shadow-md border">
           <h3 className="text-lg font-semibold mb-4">Order Summary</h3>
-          <p>Your order summary will be here...</p>
+          <div className="space-y-4">
+            {cart.products.map((product) => (
+              <div key={product.id} className="flex justify-between">
+                <div className="flex items-center">
+                  <img
+                    src={product.image}
+                    alt=""
+                    className="w-16 h-16 object-contain rounded"
+                  />
+                  <div className="ml-4">
+                    <h4 className="text-md font-semibold">{product.name}</h4>
+                    <p className="text-gray-600">
+                      ${product.price} x {product.quantity}
+                    </p>
+                  </div>
+                </div>
+                <div className="text-gray-800">
+                  ${product.price * product.quantity}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-4 border-t pt-4">
+            <div className="flex justify-between">
+              <span>total price</span>
+              <span className="font-semibold">
+                ${cart.totalPrice.toFixed(2)}
+              </span>
+            </div>
+          </div>
+          <button
+            className="w-full bg-red-600 text-white py-2 mt-6 hover:bg-red-800#"
+            onClick={placeOrder}
+          >
+            place order
+          </button>
         </div>
       </div>
     </div>
