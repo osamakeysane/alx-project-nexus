@@ -11,13 +11,13 @@ import { setSearchTerm } from "../redux/productSlice";
 const Navbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
-  const [search, setSearch] = useState();
+  const [search, setSearch] = useState<string>("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleSearch = (e) => {
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(setSearchTerm(search));
+    dispatch(setSearchTerm(search)); // search is now typed as string
     navigate("/filter-data");
   };
 
@@ -39,12 +39,15 @@ const Navbar = () => {
           <Link to="/">eShop</Link>
         </div>
         <div className="relative flex-1 mx-4">
-          <form onClick={handleSearch}>
+          <form onSubmit={handleSearch}>
             <input
               type="text"
+              value={search}
               placeholder="Search Product"
               className="w-full border py-2 px-4 "
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setSearch(e.target.value)
+              }
             />
             <FaSearch className="absolute top-3 right-3 text-red-500"></FaSearch>
           </form>

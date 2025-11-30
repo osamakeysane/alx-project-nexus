@@ -7,6 +7,7 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import { useState } from "react";
 import Order from "./pages/Order";
+import FilterData from "./pages/FilterData";
 
 function App() {
   const [order, setOrder] = useState(null);
